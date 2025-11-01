@@ -1,6 +1,11 @@
 package models
 
-import "github.com/tanset/REST-API/db"
+import (
+	"errors"
+
+	"github.com/tanset/REST-API/db"
+	"github.com/tanset/REST-API/db/utils"
+)
 
 type User struct {
 	ID int64
@@ -17,8 +22,12 @@ func (u User) Save() error {
 	}
 
 	defer stmt.Close()
+	hashedPassword, err := utils.HashPassword(u.Password)
 
-	result, err := stmt.Exec(u.Email, u.Password)
+	if err != nil {
+		return err
+	}
+	result, err := stmt.Exec(u.Email, hashedPassword)
 
 	if err != nil {
 		return err
@@ -28,4 +37,24 @@ func (u User) Save() error {
 
 	u.ID = userId
 	return err
+}
+
+func (u User) ValidateCredentials() error {
+	query := "SELECT id, password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, u.Email)
+
+	var retrievedPassword string
+	err := row.Scan(&u.ID, &retrievedPassword)
+
+	if err != nil {
+		return err
+	}
+
+	passwordIsValid := utils.CheckPasswordHash(u.Password, retrievedPassword)
+
+	if !passwordIsValid {
+		return errors.New("Credentials invalid")
+	}
+
+	return nil
 }
