@@ -1,69 +1,56 @@
-# REST-API
+# REST-API (Go)
 
-This project is a simple example of a RESTful API. It shows how to use standard HTTP methods (GET, POST, PUT, DELETE) to manage data resources. You can use this API to learn or develop your own applications.
+This project is a simple RESTful API built with **Go** and the **Gin** framework. It demonstrates how to use standard HTTP methods to manage event data and user authentication.
 
 ## Features
 
-- Follows REST API design rules
-- Clean API routes and structure
-- Uses JSON format for data
-- Easy to expand or connect to other services
+- Built with **Go** and **Gin Web Framework**
+- **JWT Authentication**: Secure login and signup functions
+- **SQLite Database**: Persistent data storage for users and events
+- **CRUD Operations**: Create, Read, Update, and Delete resources
+- Middleware for protected routes
 
 ## Main Functions
 
-- User registration, login, and authentication
-- CRUD (Create, Read, Update, Delete) for resources (such as articles or users)
-- Basic error handling and permission checks
+- **User Management**: Signup and login with hashed passwords
+- **Event Management**: Manage event details like name, location, and time
+- **Token Verification**: Only authorized users can modify data
 
 ## Installation
 
-1. Clone the project:
+1. **Clone the project:**
+
    ```bash
-   git clone https://github.com/tanset/REST-API.git
+   git clone [https://github.com/tanset/REST-API.git](https://github.com/tanset/REST-API.git)
    cd REST-API
    ```
 
-2. Install dependencies:  
-   (For example, using Node.js)
+2. **Download dependencies:**
+
    ```bash
-   npm install
+   go mod tidy
    ```
 
-3. Start the server:
+3. **Start the server:**
+
    ```bash
-   npm run start
+   go run .
    ```
-   or
-   ```bash
-   node app.js
-   ```
+   *The server will run at `http://localhost:8080`.*
 
-4. Test the API with curl, Postman, or any API tool you like.
+## API Endpoints
 
-## Example API Endpoints
+| Method | URL            | Description           | Auth Required |
+| ------ | -------------- | --------------------- | ------------- |
+| POST   | `/signup`      | Register a new user   | No            |
+| POST   | `/login`       | Login and get token   | No            |
+| GET    | `/events`      | List all events       | No            |
+| GET    | `/events/:id`  | Get a single event    | No            |
+| POST   | `/events`      | Create a new event    | **Yes**       |
+| PUT    | `/events/:id`  | Update an event       | **Yes**       |
+| DELETE | `/events/:id`  | Delete an event       | **Yes**       |
 
-| Method | URL                  | Description       |
-|--------|----------------------|------------------|
-| GET    | /api/resource        | Get all items    |
-| POST   | /api/resource        | Add new item     |
-| GET    | /api/resource/:id    | Get single item  |
-| PUT    | /api/resource/:id    | Update item      |
-| DELETE | /api/resource/:id    | Delete item      |
-
-*Replace "resource" with your actual data model, for example, "users" or "posts".*
-
-## Contribution
-
-1. Fork this repo
-2. Create a new branch (`git checkout -b new-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to your branch (`git push origin new-feature`)
-5. Open a Pull Request
 
 ## License
 
 MIT License
-
----
-
-If you have questions, please open an issue!
